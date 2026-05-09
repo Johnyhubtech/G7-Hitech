@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>G7 HiTech</title>
+  <title>G7 HiTech - Smart Tech Services</title>
 
   <style>
     * {
@@ -14,11 +14,13 @@
     }
 
     body {
-      background: #0b1020;
+      background: radial-gradient(circle at top, #172554, #020617);
+      overflow-x: hidden;
       color: white;
     }
 
     header {
+      backdrop-filter: blur(10px);
       background: #111827;
       padding: 20px 40px;
       display: flex;
@@ -47,6 +49,7 @@
     }
 
     .hero {
+      position: relative;
       height: 90vh;
       display: flex;
       justify-content: center;
@@ -54,10 +57,13 @@
       flex-direction: column;
       text-align: center;
       padding: 20px;
-      background: linear-gradient(to right, #0b1020, #1e3a8a);
+      background: linear-gradient(135deg, #020617, #172554, #312e81);
     }
 
     .hero h1 {
+      background: linear-gradient(to right, cyan, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       font-size: 60px;
       margin-bottom: 20px;
     }
@@ -70,6 +76,7 @@
     }
 
     .btn {
+      box-shadow: 0 0 20px rgba(0,255,255,0.4);
       background: cyan;
       color: black;
       padding: 15px 30px;
@@ -103,6 +110,8 @@
     }
 
     .card {
+      backdrop-filter: blur(12px);
+      background: rgba(17, 24, 39, 0.8);
       background: #111827;
       padding: 25px;
       border-radius: 20px;
@@ -202,6 +211,12 @@
   </section>
 
   <section class="services" id="services">
+
+    <div style="text-align:center;margin-bottom:30px;">
+      <span style="padding:10px 20px;border:1px solid cyan;border-radius:50px;color:cyan;">
+        Trusted Digital Service Platform
+      </span>
+    </div>
     <h2 class="section-title">Our Services</h2>
 
     <div class="service-container">
@@ -234,6 +249,26 @@
   </section>
 
   <section class="booking" id="booking">
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;align-items:center;">
+
+      <div>
+        <h2 style="font-size:50px;margin-bottom:20px;color:cyan;">Why Choose G7 HiTech?</h2>
+
+        <p style="line-height:2;font-size:18px;color:#d1d5db;">
+          We provide professional tech solutions with fast delivery, secure bookings,
+          modern support systems, and real-time service tracking.
+        </p>
+
+        <div style="margin-top:30px;display:grid;gap:15px;">
+          <div>✔ Fast Service Delivery</div>
+          <div>✔ Professional Support</div>
+          <div>✔ Secure Online Booking</div>
+          <div>✔ Modern Digital Experience</div>
+        </div>
+      </div>
+
+      <div>
     <h2 class="section-title">Book a Service</h2>
 
     <form id="bookingForm">
@@ -261,6 +296,31 @@
       <div class="success-message" id="successMessage"></div>
 
     </form>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- Registration Section -->
+  <section class="services" id="register">
+
+    <h2 class="section-title">Create Account</h2>
+
+    <form id="registerForm" style="max-width:600px;">
+
+      <input type="text" id="regName" placeholder="Full Name" required>
+
+      <input type="email" id="regEmail" placeholder="Email Address" required>
+
+      <input type="password" id="regPassword" placeholder="Password" required>
+
+      <button type="submit" class="btn">Create Account</button>
+
+      <div class="success-message" id="registerMessage"></div>
+
+    </form>
+
   </section>
 
   <footer>
@@ -277,6 +337,11 @@
       getFirestore,
       collection,
       addDoc
+    }
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -294,6 +359,7 @@
     // INITIALIZE FIREBASE
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
 
     // BOOKING FORM
@@ -333,6 +399,31 @@
       } catch (error) {
         successMessage.innerHTML = 'Error submitting booking';
         console.error(error);
+      }
+
+    });
+
+
+    // REGISTRATION
+    const registerForm = document.getElementById('registerForm');
+    const registerMessage = document.getElementById('registerMessage');
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('regEmail').value;
+      const password = document.getElementById('regPassword').value;
+
+      try {
+
+        await createUserWithEmailAndPassword(auth, email, password);
+
+        registerMessage.innerHTML = 'Account Created Successfully!';
+
+        registerForm.reset();
+
+      } catch (error) {
+        registerMessage.innerHTML = error.message;
       }
 
     });
