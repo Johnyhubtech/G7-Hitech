@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>G7 HiTech - Login</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#020617,#172554,#312e81);
+      overflow:hidden;
+    }
+
+    .container{
+      width:400px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      backdrop-filter:blur(15px);
+      padding:40px;
+      border-radius:20px;
+      color:white;
+      box-shadow:0 0 30px rgba(0,255,255,0.2);
+    }
+
+    .logo{
+      text-align:center;
+      font-size:35px;
+      font-weight:bold;
+      color:cyan;
+      margin-bottom:10px;
+    }
+
+    .subtitle{
+      text-align:center;
+      margin-bottom:30px;
+      color:#cbd5e1;
+    }
+
+    .input-box{
+      margin-bottom:20px;
+    }
+
+    .input-box label{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+    }
+
+    .input-box input{
+      width:100%;
+      padding:15px;
+      border:none;
+      outline:none;
+      border-radius:10px;
+      background:#0f172a;
+      color:white;
+      font-size:15px;
+    }
+
+    .input-box input:focus{
+      border:1px solid cyan;
+    }
+
+    .btn{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:10px;
+      background:cyan;
+      color:black;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      transform:scale(1.03);
+      box-shadow:0 0 20px cyan;
+    }
+
+    .message{
+      text-align:center;
+      margin-top:20px;
+      color:cyan;
+    }
+
+    .bottom-text{
+      text-align:center;
+      margin-top:25px;
+      color:#cbd5e1;
+    }
+
+    .bottom-text a{
+      color:cyan;
+      text-decoration:none;
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="logo">G7 HiTech</div>
+
+    <p class="subtitle">
+      Login to your account
+    </p>
+
+    <form id="loginForm">
+
+      <div class="input-box">
+        <label>Email Address</label>
+        <input type="email" id="email" required>
+      </div>
+
+      <div class="input-box">
+        <label>Password</label>
+        <input type="password" id="password" required>
+      </div>
+
+      <button type="submit" class="btn">
+        Login
+      </button>
+
+      <div class="message" id="message"></div>
+
+    </form>
+
+    <div class="bottom-text">
+      Don't have an account?
+      <a href="register.html">Register</a>
+    </div>
+
+  </div>
+
+
+  <!-- Firebase Login -->
+
+  <script type="module">
+
+    import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword
+    }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+    // Firebase Configuration
+    const firebaseConfig = {
+
+      apiKey: "YOUR_API_KEY",
+
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+
+      projectId: "YOUR_PROJECT_ID",
+
+      storageBucket: "YOUR_PROJECT.appspot.com",
+
+      messagingSenderId: "YOUR_SENDER_ID",
+
+      appId: "YOUR_APP_ID"
+
+    };
+
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+
+    // Login Form
+    const loginForm = document.getElementById('loginForm');
+
+    const message = document.getElementById('message');
+
+
+    loginForm.addEventListener('submit', async(e)=>{
+
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+
+      const password = document.getElementById('password').value;
+
+
+      try{
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        message.innerHTML = "Login Successful";
+
+        setTimeout(()=>{
+
+          window.location.href = "dashboard.html";
+
+        },1500);
+
+      }
+
+      catch(error){
+
+        message.innerHTML = error.message;
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
